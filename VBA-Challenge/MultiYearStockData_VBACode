@@ -1,0 +1,91 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "ThisWorkbook"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = True
+
+
+Sub MultiYearStockData()
+
+' List of variables
+Dim Ticker
+Dim YearlyChange
+Dim PercentChange
+Dim TotalStockVolume As Double
+Dim OpenPrice
+Dim ClosePrice
+Dim SummaryTableRow
+Dim YearStart
+Dim wsCount As Integer
+
+
+wsCount = ActiveWorkbook.Worksheets.Count
+
+For ws = 1 To wsCount
+
+    ' Column Titles
+    Worksheets(ws).Range("I1") = "Ticker"
+    Worksheets(ws).Range("J1") = "Yearly Change"
+    Worksheets(ws).Range("K1") = "Percent Change"
+    Worksheets(ws).Range("L1") = "Total Stock Volume"
+    
+SummaryTableRow = 2
+
+    ' begin the loop
+    For I = 2 To Worksheets(ws).Cells(Rows.Count, 1).End(xlUp).Row
+    
+        
+        Ticker = Worksheets(ws).Cells(I, 1)
+        TotalStockVolume = TotalStockVolume + Cells(I, 7)
+        
+        'Opening price
+        If OpenPrice = "" Then
+            OpenPrice = Worksheets(ws).Cells(I, 3)
+        End If
+        
+        'The closing price
+        If Ticker <> Worksheets(ws).Cells((I + 1), 1) Then
+        ClosePrice = Worksheets(ws).Cells(I, 6)
+        
+        YearlyChange = OpenPrice - ClosePrice
+        
+        'Ticker output
+        Worksheets(ws).Range("I" & SummaryTableRow).Value = Ticker
+        
+        Worksheets(ws).Range("J" & SummaryTableRow).Value = YearlyChange
+        If YearlyChange > 0 Then
+        
+        'Positive yearly change = green
+        'Negative yearly change =red
+        Worksheets(ws).Range("J" & SummaryTableRow).Interior.ColorIndex = 4 'Green
+        Else
+        Worksheets(ws).Range("J" & SummaryTableRow).Interior.ColorIndex = 3 'Red
+        End If
+        
+       
+        If startPrice <> ClosePrice Then
+            PercentChange = YearlyChange / ClosePrice
+        Else
+            PercentChange = 0
+        End If
+        
+        Worksheets(ws).Range("K" & SummaryTableRow).Value = PercentChange
+        Worksheets(ws).Range("K" & SummaryTableRow).NumberFormat = "0.00%"
+        Worksheets(ws).Range("L" & SummaryTableRow).Value = TotalStockVolume
+        SummaryTableRow = SummaryTableRow + 1
+        TotalStockVolume = 0
+        End If
+        
+        Next I
+        
+        Next ws
+        
+        End Sub
+        
+        
+
+
