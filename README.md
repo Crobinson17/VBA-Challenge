@@ -24,4 +24,4 @@ The total stock volume also genereated on "L" column.
 
 Solution 5 Greatest
 
-At last not least the solution also provide the stock with the "Greatest % increase", "Greatest % decrease" and "Greatest total volume".
+Also the solution should provide the stock with the "Greatest % increase", "Greatest % decrease" and "Greatest total volume".
